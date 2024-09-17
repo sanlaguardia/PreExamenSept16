@@ -151,7 +151,7 @@ exports.deleteUsuarioById = async (req, res) => {
     }
 };
 
-//---------------------------------- Libros -------------------------------------
+//---------------------------------- Libros ------------------------------------
 const Libro = db.Libro;
 
 // Crear un nuevo libro
