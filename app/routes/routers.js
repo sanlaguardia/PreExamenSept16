@@ -6,7 +6,7 @@ const departamentos = require('../controllers/controller.js');
 
 router.post('/api/usuarios/create', departamentos.createUsuario);
 router.get('/api/usuarios/all', departamentos.retrieveAllUsuarios);
-router.get('/api/usuarios/onebyid/:id', departamentos.getUsuarioByIdd);
+router.get('/api/usuarios/onebyid/:id', departamentos.getUsuarioById);
 router.put('/api/usuarios/update/:id', departamentos.updateUsuarioById);
 router.delete('/api/usuarios/delete/:id', departamentos.deleteUsuarioById);
 
