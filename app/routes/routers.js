@@ -22,4 +22,10 @@ router.get('/api/autores/onebyid/:id', departamentos.getAutorById);
 router.put('/api/autores/update/:id', departamentos.updateAutorById);
 router.delete('/api/autores/delete/:id', departamentos.deleteAutorById);
 
+router.post('/api/envios/create', departamentos.createEnvio);
+router.get('/api/envios/all', departamentos.retrieveAllEnvios);
+router.get('/api/envios/onebyid/:id', departamentos.getEnvioById);
+router.put('/api/envios/update/:id', departamentos.updateEnvioById);
+router.delete('/api/envios/delete/:id', departamentos.deleteEnvioById);
+
 module.exports = router;

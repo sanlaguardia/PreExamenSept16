@@ -452,3 +452,148 @@ exports.deleteAutorById = async (req, res) => {
         });
     }
 };
+
+//---------------------------------------------- Prueba ---------------------------------------------------
+const Envio = db.Envio;
+
+// Crear un nuevo envío
+exports.createEnvio = (req, res) => {
+    let envio = {};
+
+    try {
+        // Construir objeto Envio desde el cuerpo de la solicitud
+        envio.direccionExacta = req.body.direccionExacta;
+        envio.departamento = req.body.departamento;
+        envio.municipio = req.body.municipio;
+
+        // Guardar en la base de datos
+        Envio.create(envio).then(result => {
+            res.status(200).json({
+                message: "Envío creado exitosamente con ID = " + result.id,
+                envio: result,
+            });
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error!",
+            error: error.message
+        });
+    }
+};
+
+// Obtener todos los envíos
+exports.retrieveAllEnvios = (req, res) => {
+    Envio.findAll()
+        .then(envios => {
+            res.status(200).json({
+                message: "¡Envíos obtenidos exitosamente!",
+                envios: envios
+            });
+        })
+        .catch(error => {
+            console.log(error);
+
+            res.status(500).json({
+                message: "Error!",
+                error: error
+            });
+        });
+};
+
+// Obtener un envío por ID
+exports.getEnvioById = (req, res) => {
+    let envioId = req.params.id;
+
+    Envio.findByPk(envioId)
+        .then(envio => {
+            if (envio) {
+                res.status(200).json({
+                    message: "Envío obtenido exitosamente con ID = " + envioId,
+                    envio: envio
+                });
+            } else {
+                res.status(404).json({
+                    message: "Envío no encontrado con ID = " + envioId,
+                    error: "404"
+                });
+            }
+        })
+        .catch(error => {
+            console.log(error);
+
+            res.status(500).json({
+                message: "Error!",
+                error: error
+            });
+        });
+};
+
+// Actualizar un envío por ID
+exports.updateEnvioById = async (req, res) => {
+    try {
+        let envioId = req.params.id;
+        let envio = await Envio.findByPk(envioId);
+
+        if (!envio) {
+            res.status(404).json({
+                message: "Envío no encontrado para actualizar con ID = " + envioId,
+                envio: "",
+                error: "404"
+            });
+        } else {
+            let updatedObject = {
+                direccionExacta: req.body.direccionExacta,
+                departamento: req.body.departamento,
+                municipio: req.body.municipio
+            };
+
+            let result = await Envio.update(updatedObject, {
+                returning: true,
+                where: { id: envioId }
+            });
+
+            if (!result) {
+                res.status(500).json({
+                    message: "Error -> No se puede actualizar el envío con ID = " + req.params.id,
+                    error: "No se puede actualizar",
+                });
+            } else {
+                res.status(200).json({
+                    message: "Envío actualizado exitosamente con ID = " + envioId,
+                    envio: updatedObject,
+                });
+            }
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Error -> No se puede actualizar el envío con ID = " + req.params.id,
+            error: error.message
+        });
+    }
+};
+
+// Eliminar un envío por ID
+exports.deleteEnvioById = async (req, res) => {
+    try {
+        let envioId = req.params.id;
+        let envio = await Envio.findByPk(envioId);
+
+        if (!envio) {
+            res.status(404).json({
+                message: "No existe un envío con ID = " + envioId,
+                error: "404",
+            });
+        } else {
+            await envio.destroy();
+            res.status(200).json({
+                message: "Envío eliminado exitosamente con ID = " + envioId,
+                envio: envio,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Error -> No se puede eliminar el envío con ID = " + req.params.id,
+            error: error.message,
+        });
+    }
+};
