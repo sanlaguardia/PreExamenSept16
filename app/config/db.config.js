@@ -27,5 +27,5 @@ db.sequelize = sequelize;
 db.Usuario = require('../models/usuario.model.js')(sequelize, Sequelize);
 db.Libro = require('../models/libro.model.js')(sequelize, Sequelize);
 db.Autor = require('../models/autor.model.js')(sequelize, Sequelize);
-db.Envior = require('../models/envio.model.js')(sequelize, Sequelize);
+db.Envio = require('../models/envio.model.js')(sequelize, Sequelize);
 module.exports = db;
