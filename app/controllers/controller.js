@@ -454,23 +454,23 @@ exports.deleteAutorById = async (req, res) => {
 };
 
 //---------------------------------------------- Prueba ---------------------------------------------------
-const Envio = db.Envio;
+const Traslado = db.Traslado;
 
-// Crear un nuevo envío
-exports.createEnvio = (req, res) => {
-    let envio = {};
+// Crear un nuevo traslado
+exports.createTraslado = (req, res) => {
+    let traslado = {};
 
     try {
-        // Construir objeto Envio desde el cuerpo de la solicitud
-        envio.direccionExacta = req.body.direccionExacta;
-        envio.departamento = req.body.departamento;
-        envio.municipio = req.body.municipio;
+        // Construir objeto Traslado desde el cuerpo de la solicitud
+        traslado.direccionExacta = req.body.direccionExacta;
+        traslado.departamento = req.body.departamento;
+        traslado.municipio = req.body.municipio;
 
         // Guardar en la base de datos
-        Envio.create(envio).then(result => {
+        Traslado.create(traslado).then(result => {
             res.status(200).json({
-                message: "Envío creado exitosamente con ID = " + result.id,
-                envio: result,
+                message: "Traslado creado exitosamente con ID = " + result.id,
+                traslado: result,
             });
         });
     } catch (error) {
@@ -481,13 +481,13 @@ exports.createEnvio = (req, res) => {
     }
 };
 
-// Obtener todos los envíos
-exports.retrieveAllEnvios = (req, res) => {
-    Envio.findAll()
-        .then(envios => {
+// Obtener todos los traslados
+exports.retrieveAllTraslados = (req, res) => {
+    Traslado.findAll()
+        .then(traslados => {
             res.status(200).json({
-                message: "¡Envíos obtenidos exitosamente!",
-                envios: envios
+                message: "¡Traslados obtenidos exitosamente!",
+                traslados: traslados
             });
         })
         .catch(error => {
@@ -500,20 +500,20 @@ exports.retrieveAllEnvios = (req, res) => {
         });
 };
 
-// Obtener un envío por ID
-exports.getEnvioById = (req, res) => {
-    let envioId = req.params.id;
+// Obtener un traslado por ID
+exports.getTrasladoById = (req, res) => {
+    let trasladoId = req.params.id;
 
-    Envio.findByPk(envioId)
-        .then(envio => {
-            if (envio) {
+    Traslado.findByPk(trasladoId)
+        .then(traslado => {
+            if (traslado) {
                 res.status(200).json({
-                    message: "Envío obtenido exitosamente con ID = " + envioId,
-                    envio: envio
+                    message: "Traslado obtenido exitosamente con ID = " + trasladoId,
+                    traslado: traslado
                 });
             } else {
                 res.status(404).json({
-                    message: "Envío no encontrado con ID = " + envioId,
+                    message: "Traslado no encontrado con ID = " + trasladoId,
                     error: "404"
                 });
             }
@@ -528,16 +528,16 @@ exports.getEnvioById = (req, res) => {
         });
 };
 
-// Actualizar un envío por ID
-exports.updateEnvioById = async (req, res) => {
+// Actualizar un traslado por ID
+exports.updateTrasladoById = async (req, res) => {
     try {
-        let envioId = req.params.id;
-        let envio = await Envio.findByPk(envioId);
+        let trasladoId = req.params.id;
+        let traslado = await Traslado.findByPk(trasladoId);
 
-        if (!envio) {
+        if (!traslado) {
             res.status(404).json({
-                message: "Envío no encontrado para actualizar con ID = " + envioId,
-                envio: "",
+                message: "Traslado no encontrado para actualizar con ID = " + trasladoId,
+                traslado: "",
                 error: "404"
             });
         } else {
@@ -547,52 +547,52 @@ exports.updateEnvioById = async (req, res) => {
                 municipio: req.body.municipio
             };
 
-            let result = await Envio.update(updatedObject, {
+            let result = await Traslado.update(updatedObject, {
                 returning: true,
-                where: { id: envioId }
+                where: { id: trasladoId }
             });
 
             if (!result) {
                 res.status(500).json({
-                    message: "Error -> No se puede actualizar el envío con ID = " + req.params.id,
+                    message: "Error -> No se puede actualizar el traslado con ID = " + req.params.id,
                     error: "No se puede actualizar",
                 });
             } else {
                 res.status(200).json({
-                    message: "Envío actualizado exitosamente con ID = " + envioId,
-                    envio: updatedObject,
+                    message: "Traslado actualizado exitosamente con ID = " + trasladoId,
+                    traslado: updatedObject,
                 });
             }
         }
     } catch (error) {
         res.status(500).json({
-            message: "Error -> No se puede actualizar el envío con ID = " + req.params.id,
+            message: "Error -> No se puede actualizar el traslado con ID = " + req.params.id,
             error: error.message
         });
     }
 };
 
-// Eliminar un envío por ID
-exports.deleteEnvioById = async (req, res) => {
+// Eliminar un traslado por ID
+exports.deleteTrasladoById = async (req, res) => {
     try {
-        let envioId = req.params.id;
-        let envio = await Envio.findByPk(envioId);
+        let trasladoId = req.params.id;
+        let traslado = await Traslado.findByPk(trasladoId);
 
-        if (!envio) {
+        if (!traslado) {
             res.status(404).json({
-                message: "No existe un envío con ID = " + envioId,
+                message: "No existe un traslado con ID = " + trasladoId,
                 error: "404",
             });
         } else {
-            await envio.destroy();
+            await traslado.destroy();
             res.status(200).json({
-                message: "Envío eliminado exitosamente con ID = " + envioId,
-                envio: envio,
+                message: "Traslado eliminado exitosamente con ID = " + trasladoId,
+                traslado: traslado,
             });
         }
     } catch (error) {
         res.status(500).json({
-            message: "Error -> No se puede eliminar el envío con ID = " + req.params.id,
+            message: "Error -> No se puede eliminar el traslado con ID = " + req.params.id,
             error: error.message,
         });
     }

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-	const Envio = sequelize.define('envio', {	
+	const Traslado = sequelize.define('traslado', {	
 		id: {
 			type: Sequelize.INTEGER,
 			autoIncrement: true,
@@ -17,5 +17,5 @@ module.exports = (sequelize, Sequelize) => {
 
 	});
 	
-	return Envio;
+	return Traslado;
 }
